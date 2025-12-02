@@ -1,0 +1,23 @@
+{
+    "unicast": "0.0.0.0",
+    "logging": 
+    {
+        "level": "debug",
+        "console": "true"
+    },
+    "applications": 
+    [
+        {
+            "name": "service-sample",
+            "id": "0x1111"
+        }
+    ],
+    "services": 
+    [
+        {
+            "service": "0x1234",
+            "instance": "0x5678",
+            "reliable": "30490"
+        }
+    ]
+}

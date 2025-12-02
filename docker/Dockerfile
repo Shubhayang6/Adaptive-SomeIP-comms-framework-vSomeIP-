@@ -1,24 +1,29 @@
 FROM ubuntu:22.04
 
-# Avoiding interactive prompts
+ENV DEBIAN_FRONTEND=noninteractive
+
+# Install dependencies
 RUN apt update && apt install -y \
     git cmake build-essential \
     libboost-all-dev libtool pkg-config \
     autoconf automake \
     && rm -rf /var/lib/apt/lists/*
 
-# Build and install vsomeip
+# Clone and build VSOMEIP
 WORKDIR /opt
-RUN git clone https://github.com/Shubhayang6/Adaptive-SomeIP-comms-framework-vSomeIP-.git
+RUN git clone https://github.com/GENIVI/vsomeip.git
+
 WORKDIR /opt/vsomeip
 RUN mkdir build && cd build && cmake .. && make -j4 && make install
 
-# Copy project into container
+# Copy project into /app
 WORKDIR /app
 COPY . .
 
 # Build the client and service
-RUN mkdir build && cd build && cmake .. && make -j4
+RUN mkdir build
+WORKDIR /app/build
+RUN cmake .. && make -j4 || cat /app/build/CMakeFiles/CMakeError.log || true
 
-# Set default directory on container run
+# Default directory
 WORKDIR /app/build
