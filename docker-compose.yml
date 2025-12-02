@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+
+  someip-service:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: someip_service
+    environment:
+      VSOMEIP_CONFIGURATION: /app/config/service.json
+    command: ["./service"]
+    networks:
+      - someip-net
+    
+  someip-client:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: someip_client
+    environment:
+      VSOMEIP_CONFIGURATION: /app/config/client.json
+    command: ["./client"]
+    networks:
+      - someip-net
+    depends_on:
+      - someip-service
+    
+networks:
+  someip-net:
+    driver: bridge
