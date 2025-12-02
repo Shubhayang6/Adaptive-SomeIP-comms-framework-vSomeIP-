@@ -4,6 +4,7 @@
 
 using namespace std;
 
+#define CLIENT_APP_ID 0x2222
 #define SERVICE_ID 0x1234
 #define INSTANCE_ID 0x5678
 #define METHOD_ID 0x0421
@@ -48,7 +49,7 @@ int main()
 {
     app = vsomeip::runtime::get()->create_application("client-sample");
 
-    if (!app->init())
+    if (!app->init(CLIENT_APP_ID))
     {
         cerr << "Failed to init client app!" << endl;
         return 1;

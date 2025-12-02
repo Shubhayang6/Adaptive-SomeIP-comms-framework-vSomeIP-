@@ -2,7 +2,7 @@
     "unicast": "0.0.0.0",
     "logging": 
     {
-        "level": "debug",
+        "level": "info",
         "console": "true"
     },
     "applications": 
@@ -17,7 +17,7 @@
         {
             "service": "0x1234",
             "instance": "0x5678",
-            "reliable": "30490"
+            "reliable": "30509"
         }
     ]
 }

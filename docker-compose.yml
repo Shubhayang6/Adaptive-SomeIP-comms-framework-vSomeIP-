@@ -1,31 +1,30 @@
-version: '3.9'
+version: "3.9"  # optional, can remove since it's obsolete
 
 services:
-
   someip-service:
     build:
       context: .
       dockerfile: docker/Dockerfile
     container_name: someip_service
-    environment:
-      VSOMEIP_CONFIGURATION: /app/config/service.json
-    command: ["./service"]
+    volumes:
+      - ./config:/app/config
+    working_dir: /app
+    command: ./build/service
     networks:
-      - someip-net
-    
+      - someip-network
+
   someip-client:
     build:
       context: .
       dockerfile: docker/Dockerfile
     container_name: someip_client
-    environment:
-      VSOMEIP_CONFIGURATION: /app/config/client.json
-    command: ["./client"]
+    volumes:
+      - ./config:/app/config
+    working_dir: /app
+    command: ./build/client
     networks:
-      - someip-net
-    depends_on:
-      - someip-service
-    
+      - someip-network
+
 networks:
-  someip-net:
+  someip-network:
     driver: bridge

@@ -1,29 +1,37 @@
+# Use Ubuntu 22.04 as base
 FROM ubuntu:22.04
 
+# Set non-interactive for apt
 ENV DEBIAN_FRONTEND=noninteractive
 
-# Install dependencies
-RUN apt update && apt install -y \
-    git cmake build-essential \
-    libboost-all-dev libtool pkg-config \
-    autoconf automake \
+# Install basic build tools and dependencies
+RUN apt-get update && apt-get install -y \
+    cmake \
+    g++ \
+    build-essential \
+    libboost-all-dev \
+    libasio-dev \
+    libtinyxml2-dev \
+    pkg-config \
+    git \
+    wget \
     && rm -rf /var/lib/apt/lists/*
 
-# Clone and build VSOMEIP
-WORKDIR /opt
-RUN git clone https://github.com/GENIVI/vsomeip.git
-
-WORKDIR /opt/vsomeip
-RUN mkdir build && cd build && cmake .. && make -j4 && make install
-
-# Copy project into /app
+# Set working directory
 WORKDIR /app
-COPY . .
 
-# Build the client and service
-RUN mkdir build
-WORKDIR /app/build
-RUN cmake .. && make -j4 || cat /app/build/CMakeFiles/CMakeError.log || true
+# Copy your project files into the container
+COPY . /app
 
-# Default directory
-WORKDIR /app/build
+# Build vsomeip3 from source
+RUN git clone https://github.com/COVESA/vsomeip.git /tmp/vsomeip && \
+    cd /tmp/vsomeip && \
+    mkdir build && cd build && \
+    cmake .. && make -j$(nproc) && make install
+
+# Build your service
+RUN mkdir -p build && cd build && \
+    cmake .. && make -j$(nproc)
+
+# Set the default command
+CMD ["./build/service"]
