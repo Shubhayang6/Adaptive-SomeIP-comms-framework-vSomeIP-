@@ -1,5 +1,5 @@
 {
-    "unicast": "0.0.0.0",
+    "unicast": "someip-service",
     "logging": 
     {
         "level": "info",
@@ -17,7 +17,17 @@
         {
             "service": "0x1234",
             "instance": "0x5678",
-            "reliable": "30509"
+            "reliable": {
+                "port": "30509",
+                "enable-magic-cookies": "false"
+            }
         }
-    ]
+    ],
+    "service-discovery":
+    {
+        "enable": "true",
+        "multicast": "224.244.224.245",
+        "port": "30490",
+        "protocol": "udp"
+    }
 }

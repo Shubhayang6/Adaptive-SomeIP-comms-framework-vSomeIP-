@@ -1,4 +1,4 @@
-version: "3.9"  # optional, can remove since it's obsolete
+version: "3.9"
 
 services:
   someip-service:
@@ -6,24 +6,42 @@ services:
       context: .
       dockerfile: docker/Dockerfile
     container_name: someip_service
+    hostname: someip-service
     volumes:
       - ./config:/app/config
     working_dir: /app
+    environment:
+      - VSOMEIP_CONFIGURATION=/app/config/service.json
+      - VSOMEIP_APPLICATION_NAME=service-sample
     command: ./build/service
     networks:
-      - someip-network
+      someip-network:
+        aliases:
+          - someip-service
+    cap_add:
+      - NET_ADMIN
 
   someip-client:
     build:
       context: .
       dockerfile: docker/Dockerfile
     container_name: someip_client
+    hostname: someip-client
     volumes:
       - ./config:/app/config
     working_dir: /app
-    command: ./build/client
+    environment:
+      - VSOMEIP_CONFIGURATION=/app/config/client.json
+      - VSOMEIP_APPLICATION_NAME=client-sample
+    command: sh -c "sleep 3 && ./build/client"
     networks:
-      - someip-network
+      someip-network:
+        aliases:
+          - someip-client
+    depends_on:
+      - someip-service
+    cap_add:
+      - NET_ADMIN
 
 networks:
   someip-network:
