@@ -18,17 +18,12 @@
         {
             "service": "0x1234",
             "instance": "0x5678",
+            "unreliable": "30490",
             "reliable": {
                 "port": "30509",
                 "enable-magic-cookies": "false"
             }
         }
     ],
-    "routing": "service-sample",
-    "service-discovery": {
-        "enable": "true",
-        "multicast": "224.244.224.245",
-        "port": "30490",
-        "protocol": "udp"
-    }
+    "routing": "service-sample"
 }
