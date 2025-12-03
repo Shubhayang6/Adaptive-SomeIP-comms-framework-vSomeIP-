@@ -37,7 +37,7 @@ int main()
 {
     app = vsomeip::runtime::get()->create_application("service-sample");
 
-    if (!app->init(SERVICE_APP_ID))
+    if (!app->init())
     {
         cerr << "Failed to init service app!" << endl;
         return 1;

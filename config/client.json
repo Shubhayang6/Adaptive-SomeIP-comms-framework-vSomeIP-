@@ -1,5 +1,6 @@
 {
-    "unicast": "0.0.0.0",
+    "unicast": "172.20.0.11",
+    "netmask": "255.255.255.0",
     "logging": 
     {
         "level": "info",
@@ -17,7 +18,13 @@
         {
             "service": "0x1234",
             "instance": "0x5678",
-            "reliable": "30509"
+            "unicast": "172.20.0.10",
+            "unreliable": "30490",
+            "reliable": {
+                "port": "30509",
+                "enable-magic-cookies": "false"
+            }
         }
-    ]
+    ],
+    "routing": "client-sample"
 }
