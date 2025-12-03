@@ -15,6 +15,7 @@ RUN apt-get update && apt-get install -y \
     pkg-config \
     git \
     wget \
+    ca-certificates \
     && rm -rf /var/lib/apt/lists/*
 
 # Set working directory
@@ -23,11 +24,14 @@ WORKDIR /app
 # Copy your project files into the container
 COPY . /app
 
-# Build vsomeip3 from source
-RUN git clone https://github.com/COVESA/vsomeip.git /tmp/vsomeip && \
+# Update CA certificates and build vsomeip3 from source
+RUN update-ca-certificates && \
+    git config --global http.sslVerify false && \
+    git clone https://github.com/COVESA/vsomeip.git /tmp/vsomeip && \
     cd /tmp/vsomeip && \
     mkdir build && cd build && \
-    cmake .. && make -j$(nproc) && make install
+    cmake .. && make -j$(nproc) && make install && \
+    ldconfig
 
 # Build your service
 RUN mkdir -p build && cd build && \

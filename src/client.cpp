@@ -41,7 +41,7 @@ void on_state(vsomeip::state_type_e state)
             message.size());
         request->set_payload(payload);
 
-        app->send(request, true);
+        app->send(request);
     }
 }
 
@@ -49,7 +49,7 @@ int main()
 {
     app = vsomeip::runtime::get()->create_application("client-sample");
 
-    if (!app->init(CLIENT_APP_ID))
+    if (!app->init())
     {
         cerr << "Failed to init client app!" << endl;
         return 1;
