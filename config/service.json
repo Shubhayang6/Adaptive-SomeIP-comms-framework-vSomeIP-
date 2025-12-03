@@ -1,5 +1,6 @@
 {
-    "unicast": "someip-service",
+    "unicast": "172.20.0.10",
+    "netmask": "255.255.255.0",
     "logging": 
     {
         "level": "info",
@@ -23,8 +24,8 @@
             }
         }
     ],
-    "service-discovery":
-    {
+    "routing": "service-sample",
+    "service-discovery": {
         "enable": "true",
         "multicast": "224.244.224.245",
         "port": "30490",
